@@ -89,6 +89,11 @@ ExclusionFactBase.prototype.test = function(...strings){
     }else{
         strings = strings.shift();
     }
+
+    if(!strings[0].match(/[\.!]/)){
+        throw new Error("String should start with a . or !");
+    }
+
     
     //Single string:
     var tokens = this.prep(strings),
@@ -121,6 +126,10 @@ ExclusionFactBase.prototype.test = function(...strings){
 //Remove from the fact base a specific pathway
 ExclusionFactBase.prototype.retract = function(string){
     "use strict";
+    if(!string[0].match(/[\.!]/)){
+        throw new Error("String should start with a . or !");
+    }
+    
     var tokens = this.prep(string),
         current = this.root,
         next;

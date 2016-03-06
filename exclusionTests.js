@@ -68,7 +68,7 @@ module.exports = {
         test.ok(!fb.test(".this.is.not.a.fact"));
         test.ok(!fb.test(".this.is.a.fact",".this.is.not.a.fact",".and.a.third.fact"));
         
-        test.ok(fb.test("this.is.a.fact",".and.a.third.fact"));
+        test.ok(fb.test(".this.is.a.fact",".and.a.third.fact"));
         test.done();
     },
 
@@ -110,8 +110,8 @@ module.exports = {
         //now assign successfully to 'an'
         fb.assert(".this.is.an.other");
         test.ok(fb.test(".this.is.an.other"));
-        test.ok(!fb.test("this.is.an!exclusive"));
-        test.ok(!fb.test("this.is.an!exclusive.fact"));
+        test.ok(!fb.test(".this.is.an!exclusive"));
+        test.ok(!fb.test(".this.is.an!exclusive.fact"));
         test.done();
     },
     
