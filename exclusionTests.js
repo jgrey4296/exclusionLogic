@@ -133,6 +133,17 @@ module.exports = {
         test.ok(fb.exists(".this.is.another.something.else!blah"));                       
         test.done();
     },
+
+    changingAnExclusiveLiteral : function(test){
+        var fb = new EFB(".this.is.an!exclusive");
+        fb.assert(".this.is.an!alternative");
+
+        test.ok(!fb.exists(".this.is.an!exclusive"));
+        test.ok(fb.exists(".this.is.an!alternative"));
+        
+        test.done();
+    },
+
     
     
 };
