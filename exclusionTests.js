@@ -1,8 +1,8 @@
+/* jshint esversion : 6 */
 var EFB = require('./ExclusionFactBase');
 
 
 module.exports = {
-
     init : function(test){
         var fb = new EFB();
         test.ok(fb !== undefined);
@@ -141,6 +141,18 @@ module.exports = {
         test.ok(!fb.exists(".this.is.an!exclusive"));
         test.ok(fb.exists(".this.is.an!alternative"));
         
+        test.done();
+    },
+
+    getVariablesAtLocation : function(test){
+        "use strict";
+        let fb = new EFB(".kitchen.people.bob",".kitchen.people.bill",".kitchen.people.jill"),
+            characters = fb.optionsAt(".kitchen.people");
+        test.ok(characters[0] === "bob");
+        test.ok(characters[1] === "bill");
+        test.ok(characters[2] === "jill");
+
+        test.ok(fb.exists(`.kitchen.people.${characters[0]}`));
         test.done();
     },
 

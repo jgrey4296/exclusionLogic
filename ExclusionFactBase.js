@@ -1,13 +1,18 @@
 /* jshint esversion : 6 */
+"use strict";
 
 /**
    Creates a fact repository / tree
    @constructor
    @param {Array.<String>} the strings to assert on construction
  */
-var ExclusionFactBase = function(...strings){
+let ExclusionFactBase = function(...strings){
     this.root = new Map();
     strings.forEach(d=>this.assert(d));
+};
+
+ExclusionFactBase.prototype.keys = function(){
+    return this.root.keys();
 };
 
 /**
@@ -38,7 +43,7 @@ ExclusionFactBase.prototype.assert = function(...strings){
         throw new Error("String should start with a . or !");
     }
     //----------
-    var tokens = this.tokenize(strings),
+    let tokens = this.tokenize(strings),
         current = this.root,
         next;
 
@@ -117,7 +122,7 @@ ExclusionFactBase.prototype.exists = function(...strings){
 
     
     //Single string:
-    var tokens = this.tokenize(strings),
+    let tokens = this.tokenize(strings),
         current = this.root,
         next;
     
@@ -157,7 +162,7 @@ ExclusionFactBase.prototype.retract = function(string){
         throw new Error("String should start with a . or !");
     }
     
-    var tokens = this.tokenize(string),
+    let tokens = this.tokenize(string),
         current = this.root,
         next;
 
@@ -196,7 +201,7 @@ ExclusionFactBase.prototype.retract = function(string){
  */
 ExclusionFactBase.prototype.retrieve = function(string){
     "use strict";
-    var tokens = this.tokenize(string),
+    let tokens = this.tokenize(string),
         current = this.root,
         next;
 
@@ -212,13 +217,17 @@ ExclusionFactBase.prototype.retrieve = function(string){
         }
     }
 
-    var subFactBase = new ExclusionFactBase();
+    let subFactBase = new ExclusionFactBase();
     subFactBase.root = current;
     return subFactBase;    
 };
 
 
-
+ExclusionFactBase.prototype.optionsAt = function(string){
+    "use strict";
+    let subTree = this.retrieve(string);
+    return Array.from(subTree.keys());
+};
 
 module.exports = ExclusionFactBase;
 
