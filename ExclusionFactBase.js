@@ -1,6 +1,7 @@
 /* jshint esversion : 6 */
 "use strict";
 
+
 /**
    Creates a fact repository / tree
    @constructor
@@ -22,7 +23,7 @@ ExclusionFactBase.prototype.keys = function(){
    @returns {Array.<String>} tokens
  */
 ExclusionFactBase.prototype.tokenize = function(string){
-    return string.replace(/\./g," $DOT$ ").replace(/!/g," $EX$ ").split(" ").slice(1);
+    return string.replace(/^!!/g," $NOT$ ").replace(/\./g," $DOT$ ").replace(/!/g," $EX$ ").split(" ").slice(1);
 };
 
 /**
@@ -116,15 +117,23 @@ ExclusionFactBase.prototype.exists = function(...strings){
         strings = strings.shift();
     }
 
-    if(!strings[0].match(/[\.!]/)){
-        throw new Error("String should start with a . or !");
-    }
+    // if(!strings[0].match(/[\.!]/)){
+    //     throw new Error("String should start with a . or !");
+    // }
 
     
     //Single string:
     let tokens = this.tokenize(strings),
         current = this.root,
+        negated = false,
+        returnStatus = true,    
         next;
+
+    //peek the head to see if its a NOT:
+    if(tokens[0] === "$NOT$"){
+        negated = true;
+        tokens.shift();
+    }
     
     while(tokens.length > 0){
         next = tokens.shift();
@@ -133,20 +142,28 @@ ExclusionFactBase.prototype.exists = function(...strings){
             if(current.has(next)){
                 current = current.get(next);
             }else{
-                return false;
+                returnStatus = false;
+                break;
             }
         }else if(next.match(/\$EX\$/) && current.exclusive){
             next = tokens.shift();
             if(current.has(next) && current.size === 1){
                 current = current.get(next);
             }else{
-                return false;
+                returnStatus = false;
+                break;
             }
         }else{
-            return false;
+            returnStatus = false;
+            break;
         }
     }
-    return true;
+
+    if(negated){
+        return !returnStatus;
+    }else{
+        return returnStatus;
+    }    
 };
 
 /**
@@ -166,6 +183,7 @@ ExclusionFactBase.prototype.retract = function(string){
         current = this.root,
         next;
 
+    //go down the string
     while(tokens.length > 2){
         next = tokens.shift();
         if(next.match(/[(\$DOT\$)(\$EX\$)]/)){

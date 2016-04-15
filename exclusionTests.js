@@ -1,23 +1,24 @@
 /* jshint esversion : 6 */
-var EFB = require('./ExclusionFactBase');
+"use strict";
+let EFB = require('./ExclusionFactBase');
 
 
 module.exports = {
     init : function(test){
-        var fb = new EFB();
+        let fb = new EFB();
         test.ok(fb !== undefined);
         test.done();
     },
 
     simpleAssert : function(test){
-        var fb = new EFB();
+        let fb = new EFB();
         fb.assert(".this.is.a.simple.exists");
         test.ok(fb.root.get('this').get('is').get('a').get('simple').get('exists') !== undefined);
         test.done();
     },
 
     simpleTest : function(test){
-        var fb = new EFB(".this.is.a.simple.exists");
+        let fb = new EFB(".this.is.a.simple.exists");
         test.ok(fb.exists(".this"));
         test.ok(fb.exists(".this.is"));
         test.ok(fb.exists(".this.is.a"));
@@ -27,7 +28,7 @@ module.exports = {
     },
 
     simpleTest_failures : function(test){
-        var fb = new EFB(".this.is.a.simple.exists");
+        let fb = new EFB(".this.is.a.simple.exists");
         test.ok(fb.exists(".should.fail") === false);
         test.ok(!fb.exists(".this.should.also.fail"));
         test.ok(!fb.exists(".blah.blah.blah"));
@@ -43,14 +44,14 @@ module.exports = {
     },
 
     constructorStringAssertions : function(test){
-        var fb = new EFB(".this.is.a.fact.base.entry",".this.is.another.fact.base.entry");
+        let fb = new EFB(".this.is.a.fact.base.entry",".this.is.another.fact.base.entry");
         test.ok(fb.exists(".this.is.a.fact.base.entry"));
         test.ok(fb.exists(".this.is.another.fact.base.entry"));        
         test.done();
     },
 
     multipleStringsInSingleTest : function(test){
-        var fb = new EFB(".this.is.a.fact",".this.is.another.fact",".and.a.third.fact");
+        let fb = new EFB(".this.is.a.fact",".this.is.another.fact",".and.a.third.fact");
         test.ok(fb.exists(".this.is.a.fact"));
         test.ok(fb.exists(".this.is.another.fact"));
         test.ok(fb.exists(".and.a.third.fact"));
@@ -60,7 +61,7 @@ module.exports = {
     },
 
     multipleStringsInTestWithFailure : function(test){
-        var fb = new EFB(".this.is.a.fact",".this.is.another.fact",".and.a.third.fact");
+        let fb = new EFB(".this.is.a.fact",".this.is.another.fact",".and.a.third.fact");
         test.ok(fb.exists(".this.is.a.fact"));
         test.ok(fb.exists(".this.is.another.fact"));
         test.ok(fb.exists(".and.a.third.fact"));
@@ -73,7 +74,7 @@ module.exports = {
     },
 
     simpleRetract : function(test){
-        var fb = new EFB(".this.is.a.fact");
+        let fb = new EFB(".this.is.a.fact");
         test.ok(fb.exists(".this.is.a.fact"));
         test.ok(fb.retract(".this.is.a"));
         //still exists:
@@ -85,7 +86,7 @@ module.exports = {
     },
 
     simpleExclusion : function(test){
-        var fb = new EFB(".this.is.an!exclusion.exists");
+        let fb = new EFB(".this.is.an!exclusion.exists");
         //should fail
         test.ok(!fb.exists(".this.is.an.exclusion"));
         //should pass
@@ -96,7 +97,7 @@ module.exports = {
     },
 
     nonExclusiveAssignToRetractedExclusive : function(test){
-        var fb = new EFB(".this.is.an!exclusive.fact");
+        let fb = new EFB(".this.is.an!exclusive.fact");
         test.ok(fb.exists(".this.is.an!exclusive.fact"));
 
         //try to assign to 'an'
@@ -115,12 +116,22 @@ module.exports = {
         test.done();
     },
 
+    exclusive_override : function(test){
+        let fb = new EFB(".bob.location!kitchen");
+        test.ok(fb.exists(".bob.location!kitchen"));
+        //assert a new location:
+        fb.assert(".bob.location!cellar");
+        test.ok(fb.exists(".bob.location!cellar"));
+        test.ok(!fb.exists(".bob.location!kitchen"));
+        test.done();
+    },
+    
     subTreeRetrieval : function(test){
-        var fb = new EFB(".this.is.a.set.of.facts",".this.is.another.set.of.facts!subtree1",
+        let fb = new EFB(".this.is.a.set.of.facts",".this.is.another.set.of.facts!subtree1",
                         ".this.is.another.set.of.side.facts!subtree2");
         test.ok(fb.exists(".this.is.a.set.of.facts",".this.is.another.set.of.facts!subtree1"));
         //get the subtree
-        var subTree = fb.retrieve(".this.is.another");
+        let subTree = fb.retrieve(".this.is.another");
         test.ok(subTree instanceof EFB);
         test.ok(subTree.exists(".set.of.facts!subtree1",".set.of.side.facts!subtree2"));
         //change the original
@@ -135,7 +146,7 @@ module.exports = {
     },
 
     changingAnExclusiveLiteral : function(test){
-        var fb = new EFB(".this.is.an!exclusive");
+        let fb = new EFB(".this.is.an!exclusive");
         fb.assert(".this.is.an!alternative");
 
         test.ok(!fb.exists(".this.is.an!exclusive"));
@@ -144,7 +155,7 @@ module.exports = {
         test.done();
     },
 
-    getVariablesAtLocation : function(test){
+    getOptionsAtLocation : function(test){
         "use strict";
         let fb = new EFB(".kitchen.people.bob",".kitchen.people.bill",".kitchen.people.jill"),
             characters = fb.optionsAt(".kitchen.people");
@@ -156,6 +167,35 @@ module.exports = {
         test.done();
     },
 
+    ensure_retraction_leaves_other_branches : function(test){
+        let fb = new EFB(".kitchen.people.bob",".kitchen.people.bill",".kitchen.people.jill",
+                         ".kitchen.items.knife",".kitchen.items.spoon"),
+            characters = fb.optionsAt(".kitchen.people"),
+            items = fb.optionsAt(".kitchen.items");
+
+        test.ok(characters[0] === 'bob');
+        test.ok(characters[2] === 'jill');
+        test.ok(items[0] === 'knife');
+
+        fb.retract(".kitchen.people.bob");
+        let newChars = fb.optionsAt(".kitchen.people");
+        test.ok(newChars[0] === 'bill');
+        test.ok(newChars[1] === 'jill');
+        fb.retract(".kitchen.people");
+        test.ok(fb.exists(".kitchen.items.knife"));
+        test.ok(fb.exists(".kitchen.items.spoon"));
+        test.done();
+    },
+    
+    negated_exist_test : function(test){
+        let fb = new EFB(".locations.kitchen",".locations.cellar");
+        test.ok(fb.exists(".locations.kitchen"));
+        test.ok(!fb.exists(".locations.blahhhh"));
+        test.ok(fb.exists("!!.locations.blahhhh"));
+        
+        test.done();
+    },
+    
     
     
 };
