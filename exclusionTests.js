@@ -193,11 +193,12 @@ module.exports = {
         test.done();
     },
 
-        negated_exist_test : function(test){
+    negated_exist_test : function(test){
         let fb = new EFB(".locations.kitchen",".locations.cellar");
         test.ok(fb.exists(".locations.kitchen"));
         test.ok(!fb.exists(".locations.blahhhh"));
         test.ok(fb.exists("!!.locations.blahhhh"));
+        test.ok(!fb.exists("!!.locations.kitchen"));
         
         test.done();
     },

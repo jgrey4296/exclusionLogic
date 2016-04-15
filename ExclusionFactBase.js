@@ -23,8 +23,8 @@ ExclusionFactBase.prototype.keys = function(){
    @param {String} string The string to tokenize based on '.' and '!'
    @returns {Array.<String>} tokens
  */
-ExclusionFactBase.prototype.tokenize = function(string){
-    return string.replace(/^!!/g," $NOT$ ").replace(/\./g," $DOT$ ").replace(/!/g," $EX$ ").split(" ").slice(1);
+ExclusionFactBase.prototype.tokenize = function(str){
+        return str.replace(/^!!/g," $NOT$ ").replace(/\./g," $DOT$ ").replace(/!/g," $EX$ ").split(/ +/).slice(1);
 };
 
 /**
@@ -130,6 +130,7 @@ ExclusionFactBase.prototype.exists = function(...strings){
         returnStatus = true,    
         next;
 
+    
     //peek the head to see if its a NOT:
     if(tokens[0] === "$NOT$"){
         negated = true;
@@ -257,7 +258,6 @@ ExclusionFactBase.prototype.optionsAt = function(string){
    by doing a dfs on the fact base, keeping track of paths as you go
  */
 ExclusionFactBase.prototype.toStrings = function(){
-    console.log("Entering toStrings");
     let PATHPOP = Symbol(),
         keyMapStack = [],
         currentPath = [],
