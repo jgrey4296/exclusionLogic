@@ -156,7 +156,6 @@ module.exports = {
     },
 
     getOptionsAtLocation : function(test){
-        "use strict";
         let fb = new EFB(".kitchen.people.bob",".kitchen.people.bill",".kitchen.people.jill"),
             characters = fb.optionsAt(".kitchen.people");
         test.ok(characters[0] === "bob");
@@ -167,6 +166,13 @@ module.exports = {
         test.done();
     },
 
+    getExclusiveOptionAtLocation : function(test){
+        let fb = new EFB(".bob.location!kitchen"),
+            location = fb.optionsAt(".bob.location");
+        test.ok(location[0] === 'kitchen');        
+        test.done();
+    },
+    
     ensure_retraction_leaves_other_branches : function(test){
         let fb = new EFB(".kitchen.people.bob",".kitchen.people.bill",".kitchen.people.jill",
                          ".kitchen.items.knife",".kitchen.items.spoon"),
@@ -186,13 +192,27 @@ module.exports = {
         test.ok(fb.exists(".kitchen.items.spoon"));
         test.done();
     },
-    
-    negated_exist_test : function(test){
+
+        negated_exist_test : function(test){
         let fb = new EFB(".locations.kitchen",".locations.cellar");
         test.ok(fb.exists(".locations.kitchen"));
         test.ok(!fb.exists(".locations.blahhhh"));
         test.ok(fb.exists("!!.locations.blahhhh"));
         
+        test.done();
+    },
+    
+    allFactsToStringArray : function(test){
+        let fb = new EFB(".locations.kitchen",".locations.cellar",
+                         ".bob.location!kitchen",
+                         ".bill.location!kitchen.temperature!cold",
+                         ".bill.location"),
+            strings = fb.toStrings();
+        test.ok(strings.length === 4);
+        test.ok(strings.indexOf(".locations.kitchen") !== -1);
+        test.ok(strings.indexOf(".locations.cellar") !== -1);
+        test.ok(strings.indexOf(".bob.location!kitchen") !== -1);
+        test.ok(strings.indexOf(".bill.location!kitchen.temperature!cold") !== -1);
         test.done();
     },
     

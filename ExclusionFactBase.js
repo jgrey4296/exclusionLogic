@@ -9,6 +9,7 @@
  */
 let ExclusionFactBase = function(...strings){
     this.root = new Map();
+    this.root.exclusive = false;
     strings.forEach(d=>this.assert(d));
 };
 
@@ -98,7 +99,7 @@ ExclusionFactBase.prototype.assert = function(...strings){
                 current = current.get(next);
             }
         }
-    };
+    }
     return this;    
 };
 
@@ -241,11 +242,48 @@ ExclusionFactBase.prototype.retrieve = function(string){
 };
 
 
+/**
+   get the variables possible at the specified depth of the tree
+   @param {String} string The location on the tree to inspect
+ */
 ExclusionFactBase.prototype.optionsAt = function(string){
     "use strict";
     let subTree = this.retrieve(string);
     return Array.from(subTree.keys());
 };
+
+/**
+   export the fact base as an array of strings
+   by doing a dfs on the fact base, keeping track of paths as you go
+ */
+ExclusionFactBase.prototype.toStrings = function(){
+    console.log("Entering toStrings");
+    let PATHPOP = Symbol(),
+        keyMapStack = [],
+        currentPath = [],
+        outputStrings = [],
+        current,
+        toPair = d=>[d,current[1].get(d)];
+
+    keyMapStack.push(["",this.root]);
+    while(keyMapStack.length > 0){
+        current = keyMapStack.pop();
+        if(current === PATHPOP){
+            currentPath.pop();
+            continue;
+        }
+        keyMapStack.push(PATHPOP);
+        if(current[1].size > 0){
+            keyMapStack = keyMapStack.concat(Array.from(current[1].keys()).map(toPair));
+            currentPath.push(current[0] + (current[1].exclusive ? '!' : '.'));
+        }else{
+            currentPath.push(current[0]);
+            outputStrings.push(currentPath.join(""));
+        }        
+    }
+    return outputStrings;
+};
+
 
 module.exports = ExclusionFactBase;
 
