@@ -217,6 +217,50 @@ module.exports = {
         test.done();
     },
     
+    bind_test : function(test){
+        let fb = new EFB(".locations.kitchen",".locations.cellar",
+                         ".locations.diningRoom"),
+            result = fb.exists(".locations.%{x}");
+        test.ok(typeof result === 'object');
+        test.ok(['kitchen','cellar','diningRoom'].indexOf(result.x) !== -1);
+        test.done();
+    },
+
+    post_bind_test : function(test){
+        let fb = new EFB(".locations.kitchen.items.spoon",".locations.cellar.items.wine"),
+            result = fb.exists(".locations.%{x}.items.%{y}");
+        test.ok(result.x === 'kitchen');
+        test.ok(['spoon','wine'].indexOf(result.y) !== -1);
+        test.done();
+    },
+    
+    exclusive_mismatch_bind_test : function(test){
+        let fb = new EFB(".locations!kitchen"),
+            result = fb.exists(".locations.%{x}");
+        test.ok(result === false);
+        test.done();
+    },
+
+    exclusive_bind_test : function(test){
+        let fb = new EFB(".locations!kitchen"),
+            result = fb.exists(".locations!%{x}");
+        test.ok(typeof result === 'object');
+        test.ok(result.x === 'kitchen');
+        test.done();
+    },
+
+
+    multi_bind_test : function(test){
+        let fb = new EFB(".locations!kitchen.items.knife"),
+            result = fb.exists(".locations!%{x}.items.%{y}");
+        test.ok(result.x === 'kitchen');
+        test.ok(result.y === 'knife');
+        test.done();
+    },
+    
+    negated_bind_test : function(test){
+        test.done();
+    },
     
     
 };
