@@ -229,7 +229,6 @@ module.exports = {
     post_bind_test : function(test){
         let fb = new EFB(".locations.kitchen.items.spoon",".locations.cellar.items.wine"),
             result = fb.exists(".locations.%{x}.items.%{y}");
-        test.ok(result.x === 'kitchen');
         test.ok(['spoon','wine'].indexOf(result.y) !== -1);
         test.done();
     },
@@ -259,6 +258,10 @@ module.exports = {
     },
     
     negated_bind_test : function(test){
+        let fb = new EFB(".locations.kitchen.items.knife"),
+            result = fb.exists("!!.locations.%{x}.items.knife");
+        test.ok(result === false);
+        
         test.done();
     },
     
