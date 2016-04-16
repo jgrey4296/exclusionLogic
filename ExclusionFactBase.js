@@ -1,6 +1,13 @@
 /* jshint esversion : 6 */
 "use strict";
 
+var _ = require('underscore');
+
+//token symbols. TODO
+let DOT = Symbol('DOT'),
+    EX = Symbol('EX'),
+    BIND = Symbol('BIND'),
+    NEG = Symbol('NEG');
 
 /**
    Creates a fact repository / tree
@@ -24,7 +31,7 @@ ExclusionFactBase.prototype.keys = function(){
    @returns {Array.<String>} tokens
  */
 ExclusionFactBase.prototype.tokenize = function(str){
-        return str.replace(/^!!/g," $NOT$ ").replace(/\./g," $DOT$ ").replace(/!/g," $EX$ ").split(/ +/).slice(1);
+    return str.replace(/^!!/g," $NOT$ ").replace(/%{(\w+)}/g," $BIND=$1$").replace(/\./g," $DOT$ ").replace(/!/g," $EX$ ").split(/ +/).slice(1);//spice off the first space
 };
 
 /**
@@ -107,7 +114,7 @@ ExclusionFactBase.prototype.assert = function(...strings){
    Boolean check for if the facts exist in the fact base
    @constructor
    @param {Array.<String>} strings The strings to test the fact base for
-   @returns {Boolean} 
+   @returns {Boolean | {} } 
  */
 //test a fact tree of maps for a particular string
 ExclusionFactBase.prototype.exists = function(...strings){
@@ -127,7 +134,7 @@ ExclusionFactBase.prototype.exists = function(...strings){
     let tokens = this.tokenize(strings),
         current = this.root,
         negated = false,
-        returnStatus = true,    
+        bindings = {},
         next;
 
     
@@ -136,35 +143,51 @@ ExclusionFactBase.prototype.exists = function(...strings){
         negated = true;
         tokens.shift();
     }
-    
+
     while(tokens.length > 0){
         next = tokens.shift();
         if(next.match(/\$DOT\$/) && !current.exclusive){
             next = tokens.shift();
-            if(current.has(next)){
+            if(next.match(/\$BIND=/)){
+                //if a bind....
+                let bindName = next.match(/\$BIND=(\w+)\$/)[1],
+                    options = Array.from(current.keys());
+                //todo:
+                //convert each option to FB, and map search down,
+                //filter for true values,
+                //THEN sample
+                bindings[bindName] = _.sample(options);
+                current = current.get(bindings[bindName]);
+            }else if(current.has(next)){
                 current = current.get(next);
             }else{
-                returnStatus = false;
+                bindings = false;
                 break;
             }
         }else if(next.match(/\$EX\$/) && current.exclusive){
             next = tokens.shift();
-            if(current.has(next) && current.size === 1){
+            if(next.match(/\$BIND=/)){
+                //if a bind....
+                let bindName = next.match(/\$BIND=(\w+)\$/)[1],
+                    options = Array.from(current.keys());
+                bindings[bindName] = _.sample(options);
+                current = current.get(bindings[bindName]);
+            }else if(current.has(next) && current.size === 1){
                 current = current.get(next);
             }else{
-                returnStatus = false;
+                bindings = false;
                 break;
             }
         }else{
-            returnStatus = false;
+            bindings = false;
             break;
         }
     }
 
     if(negated){
-        return !returnStatus;
+        return !bindings;
     }else{
-        return returnStatus;
+        return bindings;
     }    
 };
 
