@@ -2,6 +2,11 @@
 
 Based on [Richard Evans Language](https://versublog.files.wordpress.com/2014/05/praxis.pdf)
 
+## Dependencies:
+[lodash](https://lodash.com/)
+[NodeUnit](https://github.com/caolan/nodeunit) for unit tests
+
+
 # Basic Usage:
 For Node.js use [amdefine](https://github.com/jrburke/amdefine) then:
 ```
