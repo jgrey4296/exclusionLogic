@@ -77,3 +77,6 @@ Currently returns values as strings, so use Number() if necessary afterwards
     result = world.exists(".characters.bill^2/4");
     //bill does not exist so result === 4
 ```
+
+## Unit Testing
+Unit tests are written for [NodeUnit](https://github.com/caolan/nodeunit)
