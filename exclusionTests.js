@@ -264,6 +264,24 @@ module.exports = {
         
         test.done();
     },
-    
+
+    value_returned_test : function(test){
+        let fb = new EFB(".this.is.a.test.fact"),
+            result = fb.exists(".this.is.a.test.fact#2/4"),
+            result2 = fb.exists(".this.is.not.a.test.fact#2/4");
+            
+        test.ok(result === "2");
+        test.ok(result2 === "4");
+        test.done();
+    },
+
+    negated_value_return_test : function(test){
+        let fb = new EFB(".this.is.a.test.fact"),
+            resPASS = fb.exists("!!.this.is.a.test.fact#2/4"),
+            resFAIL = fb.exists("!!.this.is.a.fail.test#2/4");
+        test.ok(resPASS === "4");
+        test.ok(resFAIL === "2");        
+        test.done();
+    },
     
 };
