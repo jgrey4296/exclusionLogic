@@ -3,23 +3,30 @@
 Based on [Richard Evans Language](https://versublog.files.wordpress.com/2014/05/praxis.pdf)
 
 # Basic Usage:
+For Node.js use [amdefine](https://github.com/jrburke/amdefine) then:
 ```
     //Require the library:
     let EFB = require('./ExclusionFactBase');
     //Create a world of facts:
     let world = new EFB();
 ```
+Require.js:
+``` 
+    require(['ExclusionFactBase'],function(EFB){
+        let world = new EFB();
+    })
+```
+
 
 ## Assertion and Retraction
 ```
     //Normal non-exclusion
     world.assert(".characters.bob",".characters.bill",".characters.jill");
-    //Assert exclusionary concepts:
+    //exclusionary concepts:
     world.assert(".characters.bob.location!kitchen");
 ```
-    And Retract statements:
+And Retract statements:
 ```
-    //Retract some statements:
     world.retract(".characters.bill");
     //leaves .characters.bob and .jill intact
 ```
@@ -32,7 +39,7 @@ Simple Existence:
         console.log("Bob says hello");
     }
 ```
-Negation:
+Negation by leading double bang:
 ```
     if(world.exists("!!.characters.bill")){
         console.log("Bill does not exist");
@@ -41,7 +48,11 @@ Negation:
 
 ### Binding
 
-Selection of options:
+
+Selection of options with %n{x}:
+(For n as the number of options to choose, x the name to bind to.
+If no n is specified, gets all the values possible
+)
 ```
     let result = world.exists(".characters.%1{x}");
     //result.x === bill || bob
@@ -51,7 +62,7 @@ Selection of options:
     //result.x === [bob,jill]
 ```
 
-Sequential Subbinding:
+Sequential Sub-binding:
 ```
     world.assert(".characters.bob.items.knife",".characters.jill.items.fork");
     result = world.exists(".characters.%1{x}.items.%1{y}");
@@ -59,6 +70,7 @@ Sequential Subbinding:
 ```
 
 ### Utility tests:
+Currently returns values as strings, so use Number() if necessary afterwards
 ```
     result = world.exists(".characters.bob^2/4"),
     //bob exists so result === 2
