@@ -220,7 +220,7 @@ module.exports = {
     bind_test : function(test){
         let fb = new EFB(".locations.kitchen",".locations.cellar",
                          ".locations.diningRoom"),
-            result = fb.exists(".locations.%{x}");
+            result = fb.exists(".locations.%1{x}");
         test.ok(typeof result === 'object');
         test.ok(['kitchen','cellar','diningRoom'].indexOf(result.x) !== -1);
         test.done();
@@ -228,8 +228,27 @@ module.exports = {
 
     post_bind_test : function(test){
         let fb = new EFB(".locations.kitchen.items.spoon",".locations.cellar.items.wine"),
-            result = fb.exists(".locations.%{x}.items.%{y}");
-        test.ok(['spoon','wine'].indexOf(result.y) !== -1);
+            result = fb.exists(".locations.%1{x}.items.%1{y}");
+        test.ok((result.x === 'kitchen' && result.y === 'spoon')
+                || (result.x === 'cellar' && result.y === 'wine'));
+        test.done();
+    },
+
+    bind_to_array_test : function(test){
+        let fb = new EFB(".locations.kitchen",".locations.cellar"),
+            result = fb.exists(".locations.%{x}");
+        test.ok(result.x instanceof Array);
+        test.ok(result.x.length === 2);
+        test.ok(result.x.indexOf('kitchen') !== -1);
+        test.ok(result.x.indexOf('cellar') !== -1);
+        test.done();
+    },
+
+    bind_subset_test : function(test){
+        let fb = new EFB(".locations.kitchen",".locations.cellar",".locations.bedroom"),
+            result = fb.exists(".locations.%2{x}");
+        test.ok(result.x instanceof Array);
+        test.ok(result.x.length === 2);        
         test.done();
     },
     
@@ -267,8 +286,8 @@ module.exports = {
 
     value_returned_test : function(test){
         let fb = new EFB(".this.is.a.test.fact"),
-            result = fb.exists(".this.is.a.test.fact#2/4"),
-            result2 = fb.exists(".this.is.not.a.test.fact#2/4");
+            result = fb.exists(".this.is.a.test.fact^2/4"),
+            result2 = fb.exists(".this.is.not.a.test.fact^2/4");
             
         test.ok(result === "2");
         test.ok(result2 === "4");
@@ -277,8 +296,8 @@ module.exports = {
 
     negated_value_return_test : function(test){
         let fb = new EFB(".this.is.a.test.fact"),
-            resPASS = fb.exists("!!.this.is.a.test.fact#2/4"),
-            resFAIL = fb.exists("!!.this.is.a.fail.test#2/4");
+            resPASS = fb.exists("!!.this.is.a.test.fact^2/4"),
+            resFAIL = fb.exists("!!.this.is.a.fail.test^2/4");
         test.ok(resPASS === "4");
         test.ok(resFAIL === "2");        
         test.done();
