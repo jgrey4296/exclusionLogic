@@ -12,7 +12,7 @@ lodash
 EL.g4  
 AblTokens.g4  
 
-## Preferred BUILDING METHOD:
+## Preferred building method:
 use make. it will fix imports automatically.
 
 ## Grammar Compilation notes:
