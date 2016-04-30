@@ -7,7 +7,7 @@ if(define !== 'function'){
 }
 
 
-define(['../lib/antlr4_runtime/index','../genFiles/ELListener','../genFiles/ELLexer','../genFiles/ELParser','./EL_custom_listener'],function(antlr4,ELListener,ELLexer,ELParser,EL_custom_listener){
+define(['../ANTLR.min','../genFiles/ELListener','../genFiles/ELLexer','../genFiles/ELParser','./EL_custom_listener'],function(antlr4,ELListener,ELLexer,ELParser,EL_custom_listener){
     "use strict";
     /**
        The Parse Function
