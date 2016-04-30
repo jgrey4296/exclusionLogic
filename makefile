@@ -18,12 +18,6 @@ $(GEN_FILES) : compileGrammar
 	@echo "updating import for" $@
 	@perl -pi -e "s/\'antlr4\/index/\'..\/lib\/antlr4_runtime\/index/g" ./$(GEN_DIR)/$@
 
-test : FORCE 
-	nodeunit ./unitTests/unitTests.js
-	nodeunit ./unitTests/allTests.js
-
-FORCE : 
-
 clean :
 	rm $(GEN_FILES:%=$(GEN_DIR)/%)
 
