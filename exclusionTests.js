@@ -302,5 +302,50 @@ module.exports = {
         test.ok(resFAIL === "2");        
         test.done();
     },
+
+    //Possible language additions:
+    //definition language
+    variational_specification : function(test){
+        let specString = ".characters.[bob,bill,jim].gender.male";
+
+        test.done();
+    },
+
+    recall_location_specification : function(test){
+        let specString = ".characters.bob.$1",
+            specString2 = "$1.location.kitchen",
+            specString3 = "$1.item.knife";
+        
+        test.done();
+    },
+
+    recombine_specification : function(test){
+        let specString = ".characters.[bob,bill,jill].$1",
+            specString2 = "$1.location.[kitchen,bathroom,bedroom].$2",
+            specString3 = "$2.item.knife";
+
+        test.done();
+    },
+    
+    
+    //test language
+
+    pairing_test : function(test){
+        let testString = ".characters.${pair:1,2}.likes.${2}?";
+        
+        test.done();
+    },
+
+    group_test : function(test){
+        let testString = ".characters.${x:X}.likes.${X}?";
+        
+        test.done();
+    },
+
+    utilityTest : function(test){
+        let testString = ".characters.bob.likes.${x}:#${x}.likeValue/0";
+        
+        test.done();
+    },
     
 };
