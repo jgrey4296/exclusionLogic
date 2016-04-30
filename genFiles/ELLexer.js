@@ -1,6 +1,6 @@
 // Generated from grammar/EL.g4 by ANTLR 4.5.3
 // jshint ignore: start
-var antlr4 = require('../lib/antlr4_runtime/index');
+var antlr4 = require('../ANTLR.min');
 
 
 var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",

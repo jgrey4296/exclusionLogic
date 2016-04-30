@@ -1,6 +1,6 @@
 // Generated from grammar/EL.g4 by ANTLR 4.5.3
 // jshint ignore: start
-var antlr4 = require('../lib/antlr4_runtime/index');
+var antlr4 = require('../ANTLR.min');
 
 // This class defines a complete listener for a parse tree produced by ELParser.
 function ELListener() {

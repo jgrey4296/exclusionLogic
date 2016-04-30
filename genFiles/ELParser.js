@@ -1,6 +1,6 @@
 // Generated from grammar/EL.g4 by ANTLR 4.5.3
 // jshint ignore: start
-var antlr4 = require('../lib/antlr4_runtime/index');
+var antlr4 = require('../ANTLR.min');
 var ELListener = require('./ELListener').ELListener;
 var grammarFileName = "EL.g4";
 
