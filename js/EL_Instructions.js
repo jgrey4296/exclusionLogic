@@ -20,6 +20,10 @@ define(['lodash'],function(_){
     ELIs.RECALL = function(){
         this.data = [];
     };
+
+    ELIs.OPTION = function(num){
+        this.num = num;
+    };
     
     //Instructions:--------------------
     //Assert a fact
