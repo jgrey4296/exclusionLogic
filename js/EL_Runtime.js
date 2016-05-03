@@ -71,7 +71,7 @@ define(['lodash','./ELModule','./EL_Instructions'],function(_,ELModule,ELIs){
                 //ex type matches, check for value
                 if(next.data instanceof ELIs.RECALL){
                     throw new Error("recalls not supported here yet");
-                }else if(!isNaN(next.data)){
+                }else if(next.data instanceof ELIs.OPTION){
                     //is number, get a random number of elements:
                     throw new Error("numeric options not supported yet");
                 }else if(!current.has(next.data)){
@@ -85,7 +85,6 @@ define(['lodash','./ELModule','./EL_Instructions'],function(_,ELModule,ELIs){
                 }
                 current = current.get(next.data);
                 this.bindToCurrentState(next.bind,current);
-                
             }else if(!(next instanceof current.exclusive)){
                 //ex type mismatch
                 if(next instanceof ELIs.BANG){
@@ -187,8 +186,8 @@ define(['lodash','./ELModule','./EL_Instructions'],function(_,ELModule,ELIs){
                 break;
             }
             //selection:
-            if(!isNaN(next.data)){
-                let selection = _.sampleSize(Array.from(current.keys()),next.data),
+            if(next.data instanceof ELIs.OPTION){
+                let selection = _.sampleSize(Array.from(current.keys()),next.data.num),
                     selectionObj = _.zipObject(next.bind,selection);
                 bindings = _.assign(bindings,selectionObj);
                 this.bindObjToCurrentState(selectionObj,current);

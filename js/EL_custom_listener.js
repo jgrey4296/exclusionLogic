@@ -95,7 +95,9 @@ define(['lodash','../genFiles/ELListener','./EL_Instructions'],function(_,ELList
 
 
     Listener.prototype.enterSelection = function(ctx){
-        if(ctx.NUMBER() !== null){
+        if(ctx.LBRACKET() !== null){
+            this.parseStack.push(new ELIs.OPTION(Number(ctx.NUMBER().getText())));
+        }else if(ctx.NUMBER() !== null){
             this.parseStack.push(Number(ctx.NUMBER().getText()));
         }else if(ctx.STRING() !== null){
             this.parseStack.push(ctx.STRING().getText());
