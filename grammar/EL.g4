@@ -18,7 +18,8 @@ selector : SELECTOR LBRACE stringList RBRACE;
 //[2] | test
 selection : LBRACKET NUMBER RBRACKET
     | selector
-    | STRING;
+    | STRING
+    | NUMBER;
 
 //something,else
 stringList : STRING
