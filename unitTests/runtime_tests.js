@@ -226,5 +226,11 @@ exports.runtime_tests = {
         test.done();
     },
 
+    multiple_string_parse : function(test){
+        let rt = new ELRuntime();
+        test.ok(rt.parse([".this.is.a.test",".this.is.another.test"]));
+        test.ok(rt.parse([".this.is.a.test?",".this.is.another.test?"]));
+        test.done();
+    },
     
 };

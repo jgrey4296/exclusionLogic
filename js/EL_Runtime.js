@@ -22,6 +22,11 @@ define(['lodash','./ELModule','./EL_Instructions'],function(_,ELModule,ELIs){
        @param string : A String to parse for actions
     */
     ELBase.prototype.parse = function(string,log){
+        if(string instanceof Array){
+            return string.map(d=>this.parse(d)).reduce(function(m,v){
+                return m && v;
+            });
+        }
         let parseObj = parser(string),
             result = false;
         if(log){
