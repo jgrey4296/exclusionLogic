@@ -290,5 +290,21 @@ exports.runtime_tests = {
         test.ok(result.x === -223);
         test.done();
     },
+
+    colour_test : function(test){
+        let rt = new ELRuntime();
+        rt.parse(".this.is.a.colour.#11bb3f");
+        let result = rt.parse(".this.is.a.colour.[1]->x?");
+        test.ok(result.x === "#11bb3f");
+        test.done();
+    },
+
+    colour_test_all_digits : function(test){
+        let rt = new ELRuntime();
+        rt.parse(".this.is.a.colour.#1234524");
+        let result = rt.parse(".this.is.a.colour.[1]->x?");
+        test.ok(result.x === "#1234524");
+        test.done();
+    },
     
 };
