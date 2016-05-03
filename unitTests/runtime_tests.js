@@ -238,5 +238,57 @@ exports.runtime_tests = {
         test.ok(rt.parse(".this.is.a.value.10"));        
         test.done();
     },
+
+    assert_negative_number : function(test){
+        let rt = new ELRuntime();
+        test.ok(rt.parse(".this.is.a.value.-10"));
+        test.done();
+    },
+
+    query_number : function(test){
+        let rt = new ELRuntime();
+        rt.parse(".this.is.a.value.22");
+        test.ok(rt.parse(".this.is.a.value.22?"));
+        test.done();
+    },
+
+    query_negative_number : function(test){
+        let rt = new ELRuntime();
+        rt.parse(".this.is.a.value.-23");
+        test.ok(rt.parse(".this.is.a.value.-23?"));
+        test.done();
+    },
+
+    fail_query_number : function(test){
+        let rt = new ELRuntime();
+        rt.parse(".this.is.a.value.25");
+        test.ok(rt.parse(".this.is.a.value.20?") === false);
+        test.done();
+    },
+
+    fail_negative_number_query : function(test){
+        let rt = new ELRuntime();
+        rt.parse(".this.is.a.value.-23");
+        test.ok(rt.parse(".this.is.a.value.-21?") === false);
+        test.done();
+    },
+
+    bind_number_query : function(test){
+        let rt = new ELRuntime();
+        rt.parse(".this.is.a.value.45");
+        let result = rt.parse(".this.is.a.value.[1]->x?");
+        test.ok(result !== true);
+        test.ok(result !== false);
+        test.ok(result.x === 45);
+        test.done();
+    },
+
+    bind_negative_number_query : function(test){
+        let rt = new ELRuntime();
+        rt.parse(".this.is.a.value.-223");
+        let result = rt.parse(".this.is.a.value.[1]->x?");
+        test.ok(result.x === -223);
+        test.done();
+    },
     
 };
