@@ -232,5 +232,11 @@ exports.runtime_tests = {
         test.ok(rt.parse([".this.is.a.test?",".this.is.another.test?"]));
         test.done();
     },
+
+    assert_a_number : function(test){
+        let rt = new ELRuntime();
+        test.ok(rt.parse(".this.is.a.value.10"));        
+        test.done();
+    },
     
 };
