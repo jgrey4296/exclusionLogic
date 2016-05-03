@@ -72,7 +72,7 @@ define(['lodash','./ELModule','./EL_Instructions'],function(_,ELModule,ELIs){
                 if(next.data instanceof ELIs.RECALL){
                     throw new Error("recalls not supported here yet");
                 }else if(next.data instanceof ELIs.OPTION){
-                    //is number, get a random number of elements:
+                    //is an option, get a random number of elements?
                     throw new Error("numeric options not supported yet");
                 }else if(!current.has(next.data)){
                     //no value, create
@@ -191,21 +191,20 @@ define(['lodash','./ELModule','./EL_Instructions'],function(_,ELModule,ELIs){
                     selectionObj = _.zipObject(next.bind,selection);
                 bindings = _.assign(bindings,selectionObj);
                 this.bindObjToCurrentState(selectionObj,current);
-            }else if(typeof next.data === 'string'){
-                if(current.has(next.data)){
-                    current = current.get(next.data);
-                    bindAll(next);
-                    //next.bind.forEach(bindFunc);
-                }else{
-                    queryStatus = false;
-                    break;
-                }                
+                let singleSelection = _.sample(selection);
+                if(current.has(singleSelection)){
+                    this.current = current.get(singleSelection);
+                }
             }else if(next.data instanceof ELIs.RECALL){
                 let selectionPossibilities = next.data.data,
                     selection = _.sample(selectionPossibilities);
                 if(this.currentState.has(selection)){
                     this.current = this.currentState.get(selection);
                 }                
+            }else if(current.has(next.data)){
+                current = current.get(next.data);
+                bindAll(next);
+                //next.bind.forEach(bindFunc);
             }else{
                 queryStatus = false;
             }
