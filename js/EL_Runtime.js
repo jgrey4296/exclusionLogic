@@ -30,17 +30,6 @@ define(['lodash','./ELModule','./EL_Instructions'],function(_,ELModule,ELIs){
         return this.performParse(parseObj);
     };
 
-    ELBase.prototype.parse_alt = function(string,log){
-        let parseObj = {
-            type : "",
-            action : "",
-            negated : false,
-            data : []
-        };
-
-        return this.performParse(parseObj);
-    };
-    
     ELBase.prototype.performParse = function(parseObj){
         let result;
         //DECLARATIONS
@@ -241,6 +230,6 @@ define(['lodash','./ELModule','./EL_Instructions'],function(_,ELModule,ELIs){
     ELBase.prototype.bindObjToCurrentState = function(bindObj,current){
         _.toPairs(bindObj).forEach(d=>this.currentState.set(d[0],current.get(d[1])));
     };
-    
+
     return ELBase;
 });
