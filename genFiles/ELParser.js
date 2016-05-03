@@ -5,7 +5,7 @@ var ELListener = require('./ELListener').ELListener;
 var grammarFileName = "EL.g4";
 
 var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
-    "\u0003\u0012b\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
+    "\u0003\u0012k\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
     "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0004",
     "\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004\f\t\f\u0003",
     "\u0002\u0003\u0002\u0005\u0002\u001b\n\u0002\u0003\u0002\u0003\u0002",
@@ -16,49 +16,54 @@ var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
     "\u0006\u0003\u0006\u0003\u0006\u0003\u0007\u0003\u0007\u0003\u0007\u0003",
     "\u0007\u0003\u0007\u0005\u0007?\n\u0007\u0003\b\u0003\b\u0003\b\u0003",
     "\b\u0007\bE\n\b\f\b\u000e\bH\u000b\b\u0005\bJ\n\b\u0003\t\u0003\t\u0003",
-    "\t\u0003\t\u0003\n\u0005\nQ\n\n\u0003\n\u0005\nT\n\n\u0003\n\u0003\n",
-    "\u0003\n\u0005\nY\n\n\u0003\u000b\u0003\u000b\u0003\u000b\u0003\u000b",
-    "\u0003\u000b\u0003\f\u0003\f\u0003\f\u0002\u0002\r\u0002\u0004\u0006",
-    "\b\n\f\u000e\u0010\u0012\u0014\u0016\u0002\u0004\u0003\u0002\u0004\u0005",
-    "\u0003\u0002\u0011\u0012b\u0002\u001a\u0003\u0002\u0002\u0002\u0004",
-    "\u001f\u0003\u0002\u0002\u0002\u0006+\u0003\u0002\u0002\u0002\b.\u0003",
-    "\u0002\u0002\u0002\n4\u0003\u0002\u0002\u0002\f>\u0003\u0002\u0002\u0002",
-    "\u000eI\u0003\u0002\u0002\u0002\u0010K\u0003\u0002\u0002\u0002\u0012",
-    "P\u0003\u0002\u0002\u0002\u0014Z\u0003\u0002\u0002\u0002\u0016_\u0003",
-    "\u0002\u0002\u0002\u0018\u001b\u0005\u0004\u0003\u0002\u0019\u001b\u0005",
-    "\u0012\n\u0002\u001a\u0018\u0003\u0002\u0002\u0002\u001a\u0019\u0003",
-    "\u0002\u0002\u0002\u001b\u001c\u0003\u0002\u0002\u0002\u001c\u001d\u0007",
-    "\u0002\u0002\u0003\u001d\u0003\u0003\u0002\u0002\u0002\u001e \u0005",
-    "\u0006\u0004\u0002\u001f\u001e\u0003\u0002\u0002\u0002\u001f \u0003",
-    "\u0002\u0002\u0002 \"\u0003\u0002\u0002\u0002!#\u0005\n\u0006\u0002",
-    "\"!\u0003\u0002\u0002\u0002\"#\u0003\u0002\u0002\u0002#$\u0003\u0002",
-    "\u0002\u0002$(\u0005\b\u0005\u0002%\'\u0005\b\u0005\u0002&%\u0003\u0002",
-    "\u0002\u0002\'*\u0003\u0002\u0002\u0002(&\u0003\u0002\u0002\u0002()",
-    "\u0003\u0002\u0002\u0002)\u0005\u0003\u0002\u0002\u0002*(\u0003\u0002",
-    "\u0002\u0002+,\u0007\u0005\u0002\u0002,-\u0007\u0005\u0002\u0002-\u0007",
-    "\u0003\u0002\u0002\u0002./\t\u0002\u0002\u0002/2\u0005\f\u0007\u0002",
-    "01\u0007\u000f\u0002\u000213\u0005\u000e\b\u000220\u0003\u0002\u0002",
-    "\u000223\u0003\u0002\u0002\u00023\t\u0003\u0002\u0002\u000245\u0007",
-    "\t\u0002\u000256\u0007\n\u0002\u000267\u0005\u000e\b\u000278\u0007\u000b",
-    "\u0002\u00028\u000b\u0003\u0002\u0002\u00029:\u0007\u0007\u0002\u0002",
-    ":;\u0007\u0012\u0002\u0002;?\u0007\b\u0002\u0002<?\u0005\n\u0006\u0002",
-    "=?\u0007\u0011\u0002\u0002>9\u0003\u0002\u0002\u0002><\u0003\u0002\u0002",
-    "\u0002>=\u0003\u0002\u0002\u0002?\r\u0003\u0002\u0002\u0002@J\u0007",
-    "\u0011\u0002\u0002AF\u0007\u0011\u0002\u0002BC\u0007\u0006\u0002\u0002",
-    "CE\u0007\u0011\u0002\u0002DB\u0003\u0002\u0002\u0002EH\u0003\u0002\u0002",
-    "\u0002FD\u0003\u0002\u0002\u0002FG\u0003\u0002\u0002\u0002GJ\u0003\u0002",
-    "\u0002\u0002HF\u0003\u0002\u0002\u0002I@\u0003\u0002\u0002\u0002IA\u0003",
-    "\u0002\u0002\u0002J\u000f\u0003\u0002\u0002\u0002KL\u0007\u0007\u0002",
-    "\u0002LM\u0005\u000e\b\u0002MN\u0007\b\u0002\u0002N\u0011\u0003\u0002",
-    "\u0002\u0002OQ\u0005\u0006\u0004\u0002PO\u0003\u0002\u0002\u0002PQ\u0003",
-    "\u0002\u0002\u0002QS\u0003\u0002\u0002\u0002RT\u0007\u0010\u0002\u0002",
-    "SR\u0003\u0002\u0002\u0002ST\u0003\u0002\u0002\u0002TU\u0003\u0002\u0002",
-    "\u0002UV\u0005\u0004\u0003\u0002VX\u0007\u0003\u0002\u0002WY\u0005\u0014",
-    "\u000b\u0002XW\u0003\u0002\u0002\u0002XY\u0003\u0002\u0002\u0002Y\u0013",
-    "\u0003\u0002\u0002\u0002Z[\u0007\r\u0002\u0002[\\\u0005\u0016\f\u0002",
-    "\\]\u0007\u000e\u0002\u0002]^\u0005\u0016\f\u0002^\u0015\u0003\u0002",
-    "\u0002\u0002_`\t\u0003\u0002\u0002`\u0017\u0003\u0002\u0002\u0002\r",
-    "\u001a\u001f\"(2>FIPSX"].join("");
+    "\t\u0003\t\u0003\n\u0005\nQ\n\n\u0003\n\u0005\nT\n\n\u0003\n\u0005\n",
+    "W\n\n\u0003\n\u0003\n\u0007\n[\n\n\f\n\u000e\n^\u000b\n\u0003\n\u0003",
+    "\n\u0005\nb\n\n\u0003\u000b\u0003\u000b\u0003\u000b\u0003\u000b\u0003",
+    "\u000b\u0003\f\u0003\f\u0003\f\u0002\u0002\r\u0002\u0004\u0006\b\n\f",
+    "\u000e\u0010\u0012\u0014\u0016\u0002\u0004\u0003\u0002\u0004\u0005\u0003",
+    "\u0002\u0011\u0012m\u0002\u001a\u0003\u0002\u0002\u0002\u0004\u001f",
+    "\u0003\u0002\u0002\u0002\u0006+\u0003\u0002\u0002\u0002\b.\u0003\u0002",
+    "\u0002\u0002\n4\u0003\u0002\u0002\u0002\f>\u0003\u0002\u0002\u0002\u000e",
+    "I\u0003\u0002\u0002\u0002\u0010K\u0003\u0002\u0002\u0002\u0012P\u0003",
+    "\u0002\u0002\u0002\u0014c\u0003\u0002\u0002\u0002\u0016h\u0003\u0002",
+    "\u0002\u0002\u0018\u001b\u0005\u0004\u0003\u0002\u0019\u001b\u0005\u0012",
+    "\n\u0002\u001a\u0018\u0003\u0002\u0002\u0002\u001a\u0019\u0003\u0002",
+    "\u0002\u0002\u001b\u001c\u0003\u0002\u0002\u0002\u001c\u001d\u0007\u0002",
+    "\u0002\u0003\u001d\u0003\u0003\u0002\u0002\u0002\u001e \u0005\u0006",
+    "\u0004\u0002\u001f\u001e\u0003\u0002\u0002\u0002\u001f \u0003\u0002",
+    "\u0002\u0002 \"\u0003\u0002\u0002\u0002!#\u0005\n\u0006\u0002\"!\u0003",
+    "\u0002\u0002\u0002\"#\u0003\u0002\u0002\u0002#$\u0003\u0002\u0002\u0002",
+    "$(\u0005\b\u0005\u0002%\'\u0005\b\u0005\u0002&%\u0003\u0002\u0002\u0002",
+    "\'*\u0003\u0002\u0002\u0002(&\u0003\u0002\u0002\u0002()\u0003\u0002",
+    "\u0002\u0002)\u0005\u0003\u0002\u0002\u0002*(\u0003\u0002\u0002\u0002",
+    "+,\u0007\u0005\u0002\u0002,-\u0007\u0005\u0002\u0002-\u0007\u0003\u0002",
+    "\u0002\u0002./\t\u0002\u0002\u0002/2\u0005\f\u0007\u000201\u0007\u000f",
+    "\u0002\u000213\u0005\u000e\b\u000220\u0003\u0002\u0002\u000223\u0003",
+    "\u0002\u0002\u00023\t\u0003\u0002\u0002\u000245\u0007\t\u0002\u0002",
+    "56\u0007\n\u0002\u000267\u0005\u000e\b\u000278\u0007\u000b\u0002\u0002",
+    "8\u000b\u0003\u0002\u0002\u00029:\u0007\u0007\u0002\u0002:;\u0007\u0012",
+    "\u0002\u0002;?\u0007\b\u0002\u0002<?\u0005\n\u0006\u0002=?\u0007\u0011",
+    "\u0002\u0002>9\u0003\u0002\u0002\u0002><\u0003\u0002\u0002\u0002>=\u0003",
+    "\u0002\u0002\u0002?\r\u0003\u0002\u0002\u0002@J\u0007\u0011\u0002\u0002",
+    "AF\u0007\u0011\u0002\u0002BC\u0007\u0006\u0002\u0002CE\u0007\u0011\u0002",
+    "\u0002DB\u0003\u0002\u0002\u0002EH\u0003\u0002\u0002\u0002FD\u0003\u0002",
+    "\u0002\u0002FG\u0003\u0002\u0002\u0002GJ\u0003\u0002\u0002\u0002HF\u0003",
+    "\u0002\u0002\u0002I@\u0003\u0002\u0002\u0002IA\u0003\u0002\u0002\u0002",
+    "J\u000f\u0003\u0002\u0002\u0002KL\u0007\u0007\u0002\u0002LM\u0005\u000e",
+    "\b\u0002MN\u0007\b\u0002\u0002N\u0011\u0003\u0002\u0002\u0002OQ\u0005",
+    "\u0006\u0004\u0002PO\u0003\u0002\u0002\u0002PQ\u0003\u0002\u0002\u0002",
+    "QS\u0003\u0002\u0002\u0002RT\u0007\u0010\u0002\u0002SR\u0003\u0002\u0002",
+    "\u0002ST\u0003\u0002\u0002\u0002TV\u0003\u0002\u0002\u0002UW\u0005\n",
+    "\u0006\u0002VU\u0003\u0002\u0002\u0002VW\u0003\u0002\u0002\u0002WX\u0003",
+    "\u0002\u0002\u0002X\\\u0005\b\u0005\u0002Y[\u0005\b\u0005\u0002ZY\u0003",
+    "\u0002\u0002\u0002[^\u0003\u0002\u0002\u0002\\Z\u0003\u0002\u0002\u0002",
+    "\\]\u0003\u0002\u0002\u0002]_\u0003\u0002\u0002\u0002^\\\u0003\u0002",
+    "\u0002\u0002_a\u0007\u0003\u0002\u0002`b\u0005\u0014\u000b\u0002a`\u0003",
+    "\u0002\u0002\u0002ab\u0003\u0002\u0002\u0002b\u0013\u0003\u0002\u0002",
+    "\u0002cd\u0007\r\u0002\u0002de\u0005\u0016\f\u0002ef\u0007\u000e\u0002",
+    "\u0002fg\u0005\u0016\f\u0002g\u0015\u0003\u0002\u0002\u0002hi\t\u0003",
+    "\u0002\u0002i\u0017\u0003\u0002\u0002\u0002\u000f\u001a\u001f\"(2>F",
+    "IPSV\\a"].join("");
 
 
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -836,8 +841,15 @@ function EL_QueryContext(parser, parent, invokingState) {
 EL_QueryContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 EL_QueryContext.prototype.constructor = EL_QueryContext;
 
-EL_QueryContext.prototype.eL_Declaration = function() {
-    return this.getTypedRuleContext(EL_DeclarationContext,0);
+EL_QueryContext.prototype.dotBangPair = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(DotBangPairContext);
+    } else {
+        return this.getTypedRuleContext(DotBangPairContext,i);
+    }
 };
 
 EL_QueryContext.prototype.QUESTION = function() {
@@ -850,6 +862,10 @@ EL_QueryContext.prototype.negation = function() {
 
 EL_QueryContext.prototype.PAIR = function() {
     return this.getToken(ELParser.PAIR, 0);
+};
+
+EL_QueryContext.prototype.selector = function() {
+    return this.getTypedRuleContext(SelectorContext,0);
 };
 
 EL_QueryContext.prototype.utility = function() {
@@ -895,14 +911,31 @@ ELParser.prototype.eL_Query = function() {
             this.match(ELParser.PAIR);
         }
 
-        this.state = 83;
-        this.eL_Declaration();
         this.state = 84;
-        this.match(ELParser.QUESTION);
+        _la = this._input.LA(1);
+        if(_la===ELParser.SELECTOR) {
+            this.state = 83;
+            this.selector();
+        }
+
         this.state = 86;
+        this.dotBangPair();
+        this.state = 90;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===ELParser.DOT || _la===ELParser.BANG) {
+            this.state = 87;
+            this.dotBangPair();
+            this.state = 92;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+        this.state = 93;
+        this.match(ELParser.QUESTION);
+        this.state = 95;
         _la = this._input.LA(1);
         if(_la===ELParser.UTILITY) {
-            this.state = 85;
+            this.state = 94;
             this.utility();
         }
 
@@ -978,13 +1011,13 @@ ELParser.prototype.utility = function() {
     this.enterRule(localctx, 18, ELParser.RULE_utility);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 88;
+        this.state = 97;
         this.match(ELParser.UTILITY);
-        this.state = 89;
+        this.state = 98;
         this.stringOrNum();
-        this.state = 90;
+        this.state = 99;
         this.match(ELParser.DIVIDOR);
-        this.state = 91;
+        this.state = 100;
         this.stringOrNum();
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1048,7 +1081,7 @@ ELParser.prototype.stringOrNum = function() {
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 93;
+        this.state = 102;
         _la = this._input.LA(1);
         if(!(_la===ELParser.STRING || _la===ELParser.NUMBER)) {
         this._errHandler.recoverInline(this);
