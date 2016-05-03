@@ -206,6 +206,18 @@ exports.runtime_tests = {
         test.done();
     },
 
-    
+    toString_test : function(test){
+        let rt = new ELRuntime();
+        rt.parse(".characters.bob.items.knife");
+        rt.parse(".characters.bill.location!kitchen");
+        rt.parse(".characters.jill.something");
+        rt.parse(".characters.jill.something.else!blah");
+        let strings = rt.toStrings();
+        test.ok(strings.length === 3);
+        test.ok(strings.indexOf(".characters.bob.items.knife") !== -1);
+        test.ok(strings.indexOf(".characters.bill.location!kitchen") !== -1);
+        test.ok(strings.indexOf(".characters.jill.something.else!blah") !== -1);
+        test.done();
+    },
     
 };

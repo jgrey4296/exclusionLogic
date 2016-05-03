@@ -231,5 +231,35 @@ define(['lodash','./ELModule','./EL_Instructions'],function(_,ELModule,ELIs){
         _.toPairs(bindObj).forEach(d=>this.currentState.set(d[0],current.get(d[1])));
     };
 
+
+    //A DFS, creating a string for every leaf path
+    ELBase.prototype.toStrings = function(){
+        let PATHPOP = Symbol(),
+            keyMapStack = [],
+            currentPath = [],
+            outputStrings = [],
+            current,
+            toPair = d=>[d,current[1].get(d)];
+
+        keyMapStack.push(["",this.root]);
+        while(keyMapStack.length > 0){
+            current = keyMapStack.pop();
+            if(current === PATHPOP){
+                currentPath.pop();
+                continue;
+            }
+            keyMapStack.push(PATHPOP);
+            if(current[1].size > 0){
+                keyMapStack = keyMapStack.concat(Array.from(current[1].keys()).map(toPair));
+                currentPath.push(current[0] + (current[1].exclusive === ELIs.BANG ? '!' : '.'));
+            }else{
+                currentPath.push(current[0]);
+                outputStrings.push(currentPath.join(""));
+            }        
+        }
+        return outputStrings;
+    };
+
+    
     return ELBase;
 });
