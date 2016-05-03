@@ -22,7 +22,7 @@ compileGrammar :
 clean :
 	rm $(GEN_FILES:%=$(GEN_DIR)/%)
 
-min : 
+min :
 	-rm ANTLR.min.js
 	r.js -o minifyData.js
 

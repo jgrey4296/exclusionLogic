@@ -123,6 +123,11 @@ define(['lodash'],function(_){
         return this;    
     };
 
+
+    ExclusionFactBase.prototype.query = function(...strings){
+        return this.exists(...strings);
+    }
+    
     /**
        Boolean check for if the facts exist in the fact base
        @constructor
