@@ -1,4 +1,4 @@
-/* global use strict */
+/* jshint esversion : 6 */
 "use strict";
 var ELRuntime = require('../js/EL_Runtime'),
     _ = require('lodash');
@@ -8,6 +8,8 @@ exports.runtime_tests = {
     init : function(test){
         let rt = new ELRuntime();
         test.ok(rt !== undefined);
+        test.ok(rt.root !== undefined);
+        test.ok(rt.root.exclusive !== undefined);
         test.done();
     },
 
@@ -203,6 +205,7 @@ exports.runtime_tests = {
         test.ok(rt.parse("${x}.items.knife?") === true);
         test.done();
     },
+
     
     
 };
