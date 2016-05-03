@@ -6,7 +6,7 @@ if(typeof define !== 'function'){
     var define = require('amdefine')(module);
 }
 
-define(['lodash','../genFiles/ELListener'],function(_,ELListener){
+define(['lodash','../genFiles/ELListener','./EL_Instructions'],function(_,ELListener,ELIs){
     "use strict";
     /**
        The custom listener constructor
@@ -40,102 +40,106 @@ define(['lodash','../genFiles/ELListener'],function(_,ELListener){
         
     };
 
+    Listener.prototype.exitEL_Program = function(ctx){
+    };
+    
+    //Create a new instruction
     Listener.prototype.enterEL_Declaration = function(ctx){
-        if(this.parseObj.type === undefined){
-            this.parseObj.type = 'declaration';
-        }
         if(ctx.negation() !== null){
-            this.parseObj.action = "retract";
+            //this.parseObj.action = "retract";
+            this.parseObj = new ELIs.Retraction();
         }else{
-            this.parseObj.action = "assert";
+            //this.parseObj.action = "assert";
+            this.parseObj = new ELIs.Assertion();
         }
-        //store the current size of the parseStack
+        //record the current size of the parseStack
+        //to know how much to pop off later
         ctx.parseStackSize = this.parseStack.length;
     };
 
+    //take all the stack components, and combine to form the instruction data
     Listener.prototype.exitEL_Declaration = function(ctx){
+        let data = [];
         while(this.parseStack.length > ctx.parseStackSize){
-            this.parseObj.data.unshift(this.parseStack.pop());
+            data.unshift(this.parseStack.pop());
         }
-        
-    };
-    
-    Listener.prototype.enterSelector = function(ctx){
-        this.parseStack.push({
-            type : "recall"
-        });
+        this.parseObj.data = data;
     };
 
+    //Create the recall component
+    Listener.prototype.enterSelector = function(ctx){
+        this.parseStack.push(new ELIs.RECALL());
+    };
+
+    //get the stringlist, set it as the recall data
     Listener.prototype.exitSelector = function(ctx){
         let stringList = this.parseStack.pop();
-        _.last(this.parseStack).value = stringList;
+        _.last(this.parseStack).data = stringList;
     };
-    
+
+    //put an ARRAY of strings on the stack for use
     Listener.prototype.enterStringList = function(ctx){
         let strings = ctx.STRING();
         if(strings instanceof Array){
             this.parseStack.push(ctx.STRING().map(d=>d.getText()));
         }else{
-            this.parseStack.push(strings.getText());
+            this.parseStack.push([strings.getText()]);
         }
     };
-    
+
+    //Create a dot or bang component, add it to the stack
     Listener.prototype.enterDotBangPair = function(ctx){
-        let dotBang = ctx.DOT() !== null ? 'DOT' : 'BANG',
-            obj = {
-                type : dotBang,
-            };
-        this.parseStack.push(obj);
+        let dotBang = ctx.DOT() !== null ? new ELIs.DOT() : new ELIs.BANG();
+        this.parseStack.push(dotBang);
     };
+
 
     Listener.prototype.enterSelection = function(ctx){
         if(ctx.NUMBER() !== null){
-            _.last(this.parseStack).value = Number(ctx.NUMBER().getText());
-            _.last(this.parseStack).selection = true;
+            this.parseStack.push(Number(ctx.NUMBER().getText()));
         }else if(ctx.STRING() !== null){
-            _.last(this.parseStack).value = ctx.STRING().getText();
+            this.parseStack.push(ctx.STRING().getText());
+        }else if(ctx.selector() !== null){
+            //no op, exitSelector will deal with it
         }
     };
 
-    Listener.prototype.exitSelection = function(ctx){
-        if(ctx.selector() !== null){
-            let selector = this.parseStack.pop();
-            _.last(this.parseStack).selection = true;
-            _.last(this.parseStack).value = selector.value;
-        }
-    };
-    
+    //finish up the instruction component 
     Listener.prototype.exitDotBangPair = function(ctx){
-        let obj,bindArray;
+        let bindData,selectionData;
         if(ctx.ARROW() !== null){
-            bindArray = this.parseStack.pop();
+            //pop the last stringList
+            bindData = this.parseStack.pop();
         }
-        obj = _.last(this.parseStack);
-        obj.bind = bindArray;
-        //this.parseObj.data.push(obj);
-        if(obj.selection === true && obj.type === 'BANG'){
-            throw new Error("Invalid combination of selection and BANG");
-        }
-        
+        //pop the selection
+        selectionData = this.parseStack.pop();
+
+        let current = _.last(this.parseStack);
+        current.bind = bindData || [];
+        current.data = selectionData;                        
     };
-        
+
+    //Create a query
     Listener.prototype.enterEL_Query = function(ctx){
-        if(this.parseObj.type === undefined){
-            this.parseObj.type = 'query';
-        }
+        this.parseObj = new ELIs.Query();
         if(ctx.negation() !== null){
             this.parseObj.negated = true;
         }
-        if(ctx.PAIR() !== null){
-            this.parseObj.pair = true;
-        }
+        ctx.parseStackSize = this.parseStack.length;
     };
 
+    Listener.prototype.exitEL_Query = function(ctx){
+        let data = [];
+        while(this.parseStack.length > ctx.parseStackSize){
+            data.unshift(this.parseStack.pop());
+        }
+        this.parseObj.data = data;        
+    };
     
+    //Set a query's return values
     Listener.prototype.enterUtility = function(ctx){
-        this.parseObj.utilityTrue = ctx.stringOrNum(0).getText();
-        this.parseObj.utilityFalse = ctx.stringOrNum(1).getText();
-
+        this.parseObj.utility[0] = ctx.stringOrNum(0).getText();
+        this.parseObj.utility[1] = ctx.stringOrNum(1).getText();
     };
     
     return Listener;
