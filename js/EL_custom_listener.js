@@ -98,9 +98,12 @@ define(['lodash','../genFiles/ELListener','./EL_Instructions'],function(_,ELList
         if(ctx.LBRACKET() !== null){
             this.parseStack.push(new ELIs.OPTION(Number(ctx.NUMBER().getText())));
         }else if(ctx.NUMBER() !== null){
-            this.parseStack.push(Number(ctx.NUMBER().getText()));
+            let value = ctx.UTILITY() !== null ? "#" + ctx.NUMBER().getText() : Number(ctx.NUMBER().getText());;
+            this.parseStack.push(value);
         }else if(ctx.STRING() !== null){
-            this.parseStack.push(ctx.STRING().getText());
+            let value = ctx.UTILITY() !== null ? "#" : "";
+            value += ctx.STRING().getText();
+            this.parseStack.push(value);
         }else if(ctx.selector() !== null){
             //no op, exitSelector will deal with it
         }
