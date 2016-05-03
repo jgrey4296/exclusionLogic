@@ -7,7 +7,7 @@
         module.exports = factory(_);
     } else {
         // change "myLib" to whatever your library is called
-        root.ANTLR = factory(root._);
+        root.EL = factory(root._);
     }
 }(this, function (_) {
 

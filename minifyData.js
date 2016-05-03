@@ -13,7 +13,7 @@
     name : "index",
     //insertRequire : [ "ReteClassInterface"],
     out: "./ANTLR.min.js",
-    optimize: "none",
+    //optimize: "none",
     wrap : {
         startFile : "startWrap.js",
         end : "define('lodash',function() { return _; }); return require('index'); }));"

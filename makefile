@@ -22,9 +22,13 @@ compileGrammar :
 clean :
 	rm $(GEN_FILES:%=$(GEN_DIR)/%)
 
-min :
+minANTLR :
 	-rm ANTLR.min.js
-	r.js -o minifyData.js
+	r.js -o minifyData_ANTLR.js
+
+min :
+	-rm EL.min.js
+	r.js -o minifyData_EL.js
 
 ignore :
 	@perl -pi -e "s/\'antlr4\/index/\'..\/lib\/antlr4_runtime\/index/g" ./$(GEN_DIR)/$@	
