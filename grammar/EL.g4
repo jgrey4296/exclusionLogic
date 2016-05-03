@@ -30,7 +30,7 @@ option : LBRACKET stringList RBRACKET;
 //eg: !!.this.is.a.test?
 //and .this.is.a.test?#2/0
 //and %.this.is.a.pair
-eL_Query : (negation)? PAIR? eL_Declaration QUESTION utility?;
+eL_Query : (negation)? PAIR? (selector)? dotBangPair (dotBangPair)* QUESTION utility?;
 
 utility : UTILITY stringOrNum DIVIDOR stringOrNum;
 
