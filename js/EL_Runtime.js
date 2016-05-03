@@ -210,7 +210,10 @@ define(['lodash','./ELModule','./EL_Instructions'],function(_,ELModule,ELIs){
         //Return bindings, false utility, or true utility
         if(queryStatus && _.keys(bindings).length > 0){
             return bindings;
-        }else if(queryObj.negated === true || !queryStatus){
+        }else if(queryObj.negated === true){
+            if(queryStatus) { return queryObj.utility[1]; }
+            return queryObj.utility[0];
+        }else if(!queryStatus){
             return queryObj.utility[1];
         }else{
             return queryObj.utility[0];

@@ -219,5 +219,12 @@ exports.runtime_tests = {
         test.ok(strings.indexOf(".characters.jill.something.else!blah") !== -1);
         test.done();
     },
+
+    negatedOnEmpty_test : function(test){
+        let rt = new ELRuntime();
+        test.ok(rt.parse("!!.this.should.fail?") === true);
+        test.done();
+    },
+
     
 };
