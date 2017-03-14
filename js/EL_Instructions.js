@@ -1,49 +1,55 @@
-if(typeof define !== 'function'){
-    var define = require('amdefine')(module);
+import _ from 'lodash';
+
+class BANG {
+    constructor() {
+        this.data = [];
+        this.bind = [];
+    }
 }
 
-
-define(['lodash'],function(_){
-    "use strict";
-    let ELIs = {};
-
-    ELIs.BANG = function(){
+class DOT {
+    constructor() {
         this.data = [];
         this.bind = [];
-    };
+    }
+}
 
-    ELIs.DOT = function(){
+class RECALL {
+    constructor() {
         this.data = [];
-        this.bind = [];
-    };
+    }
+}
 
-    ELIs.RECALL = function(){
-        this.data = [];
-    };
-
-    ELIs.OPTION = function(num){
+class OPTION {
+    contructor(num) {
         this.num = num;
-    };
-    
-    //Instructions:--------------------
-    //Assert a fact
-    ELIs.Assertion = function(){
-        this.data = [];
-    };
+    }
+}
 
-    //Retract a fact
-    ELIs.Retraction = function(){
+//Instructions:--------------------
+//Assert a fact
+class Assertion {
+    constructor() {
         this.data = [];
-    };
+    }
+}
 
-    //Query for a fact
-    ELIs.Query = function(){
+//Retract a fact
+class Retraction {
+    constructor() {
+        this.data = [];
+    }
+}
+
+//Query for a fact
+class Query {
+    constructor() {
         this.data = [];
         this.negated = false;
         this.pair = null;
         this.utility = [true, false];
-    };
+    }
+}
 
 
-    return ELIs;
-});
+export { BANG, DOT, RECALL, OPTION, Assertion, Retraction, Query };
