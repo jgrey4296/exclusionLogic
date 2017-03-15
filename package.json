@@ -31,6 +31,7 @@
     "chai": "^3.5.0",
     "eslint": "^3.17.1",
     "eslint-loader": "^1.6.3",
+    "eslint-plugin-flowtype": "^2.30.3",
     "flow-babel-webpack-plugin": "^1.0.1",
     "flow-bin": "^0.41.0",
     "jsdoc": "^3.4.3",
