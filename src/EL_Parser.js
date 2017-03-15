@@ -1,30 +1,57 @@
+// @flow
+import _ from 'lodash';
 import * as P from 'parsimmon';
 import * as ELIs from './EL_Instructions';
 
+//Types
+type SuccResult_t = { status: boolean, value: any };
+type FailResult_t = { status: boolean, expected: string[], index: Object };
+type Result_t = SuccResult_t | FailResult_t;
+type PFunc_t = ((Function) => Function);
+
 //Utility
 //Optional whitespace wrapper:
-let OWS = {parser} => { return P.optWhitespace.then(parser).skip(P.optWhitespace) },
+let OWS : PFunc_t = (parser ) => { return P.optWhitespace.then(parser).skip(P.optWhitespace); },
     //non-optional whitespace sequence
-    PWS = { parser } => { return parser.skip(P.whitespace) },
+    PWS : PFunc_t = (parser) => { return parser.skip(P.whitespace); },
     //Whitespace bookended sequence
-    WPW = { parser } => { return P.whitespace.then(parser).skip(P.whitespace); };
+    WPW : PFunc_t = (parser) => { return P.whitespace.then(parser).skip(P.whitespace); };
 
 //Parsers:
-
-let word = P.regex(/[a-zA-Z_]+/),
-    DOT  = P.regex(/\./),
-    BANG = P.string('!'),
-    QU   = P.string('?'),
-    ARR  = P.string('->');
-
-let OPALT = P.alt(DOT,BANG,ARR),
-    END = QU.or(P.eof)
+//Assertion: .a.b.c, .a.b.c!d
+//Retraction: -.a.b.c
+//Query: .a.b.c?
 
 
-let wordSep = P.sepBy(word,P.alt(
+let text = P.regex(/[a-zA-Z_]+/),
+    num = P.regex(/-?[0-9]+(\.[0-9]+)?/).map(Number),
+    word = P.alt(text,num),
+    DOT  = P.string('.').result(ELIs.DOT),
+    BANG = P.string('!').result(ELIs.BANG),
+    QU   = P.string('?').result(ELIs.QUESTION),
+    ARR  = P.string('->').result(ELIs.BIND);
+
+
+//something.   something!
+let finalWord = word.map(d=>{ return new ELIs.AccessPair(d); }),
+    basePair = P.seqMap(word,P.alt(DOT,BANG),(w,tt) => { return new ELIs.AccessPair(w,tt); }),
+    //something.something!
+    baseStr  = basePair.many(),
+    //a.b.c
+    assert   = P.seq(baseStr, finalWord).map( seq => { return new ELIs.Assertion(_.flatten(seq)); }),
+    //-a.b.c
+    retract  = P.string('-').then(P.seq(baseStr,finalWord).map(seq => { return new ELIs.Retraction(_.flatten(seq)); })),
+	//a.b.c?
+    //todo add negation
+    query    = P.seq(baseStr,finalWord).map( seq => { return new ELIs.Query(_.flatten(seq)); }).skip(QU);
 
 
 //Main parser:
-let parser = null;
+//parser ( input : string ) : Base_Instruction
+let ELParser = P.alt(query,retract,assert);
 
-export { parser };
+export {
+    ELParser,
+    text,num,word,DOT,BANG,QU,ARR,basePair,
+    baseStr, assert, retract, query
+};
