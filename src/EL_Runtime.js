@@ -13,19 +13,23 @@ class EL_Runtime {
         this.root = new EL_Node('root','DOT');
     }
 
-    parse(string){
+    // parse ( str : string ) : boolean 
+    parse(str){
 
         return false;
     }
-    
+
+    // assert ( factString : Assertion ) : boolean 
     assert(factString){
 
     }
 
+    // retract ( factString : Retraction ) : boolean
     retract(factString){
 
     }
 
+    // query ( factString : Query ) : Mixed
     query(factString){
 
     }
