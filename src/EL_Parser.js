@@ -38,9 +38,9 @@ let finalWord = word.map(d=>{ return new ELIs.AccessPair(d); }),
     //something.something!
     baseStr  = basePair.many(),
     //a.b.c
-    assert   = P.seq(baseStr, finalWord).map( seq => { return new ELIs.Assertion(_.flatten(seq)); }),
+    assert   = P.seq(P.string('.').then(baseStr), finalWord).map( seq => { return new ELIs.Assertion(_.flatten(seq)); }),
     //-a.b.c
-    retract  = P.string('-').then(P.seq(baseStr,finalWord).map(seq => { return new ELIs.Retraction(_.flatten(seq)); })),
+    retract  = P.string('-.').then(P.seq(baseStr,finalWord)).map(seq => { return new ELIs.Retraction(_.flatten(seq)); }),
 	//a.b.c?
     //todo add negation
     query    = P.seq(baseStr,finalWord).map( seq => { return new ELIs.Query(_.flatten(seq)); }).skip(QU);
@@ -48,10 +48,6 @@ let finalWord = word.map(d=>{ return new ELIs.AccessPair(d); }),
 
 //Main parser:
 //parser ( input : string ) : Base_Instruction
-let ELParser = P.alt(query,retract,assert).many();
+let ELParser = (P.alt(query,retract,assert).skip(P.alt(P.string('\n'),P.eof,P.string(' ')))).many();
 
-export {
-    ELParser,
-    text,num,word,DOT,BANG,QU,ARR,basePair,
-    baseStr, assert, retract, query
-};
+export default ELParser;
