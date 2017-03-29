@@ -10,15 +10,19 @@ let BANG = Symbol('BANG'),
 export type Trie_t = BANG | DOT; 
 
 class AccessPair {
-    constructor(text,trietype = DOT){
+    constructor(text, trietype=DOT, isVar=false){
         this.text = text;
         this.trietype = trietype;
+        this.isVar = isVar;
     }
 }
 
+//--------------------
 class Base_Instruction {
     constructor(data = []){
+        //The location string in the trie
         this.data = data;
+        //Any variables used in the string 
         this.bind = [];
     }
 }
