@@ -7,6 +7,8 @@ let BANG = Symbol('BANG'),
     BIND = Symbol('BIND'),
     RETRACT = Symbol('RETRACT');
 
+export type Trie_t = BANG | DOT; 
+
 class AccessPair {
     constructor(text,trietype = DOT){
         this.text = text;
@@ -26,6 +28,11 @@ class Assertion  extends Base_Instruction {}
 class Retraction extends Base_Instruction {}
 class Query      extends Base_Instruction {}
 
+//Exceptions:
+class ELException {
+    constructor(...vals) {
+        this.values = vals;
+    }
+}
 
-
-export { BANG, DOT, QUESTION, Assertion, Retraction, Query, AccessPair };
+export { BANG, DOT, QUESTION, Assertion, Retraction, Query, AccessPair, ELException };

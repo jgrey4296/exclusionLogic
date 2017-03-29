@@ -48,7 +48,7 @@ let finalWord = word.map(d=>{ return new ELIs.AccessPair(d); }),
 
 //Main parser:
 //parser ( input : string ) : Base_Instruction
-let ELParser = P.alt(query,retract,assert);
+let ELParser = P.alt(query,retract,assert).many();
 
 export {
     ELParser,
