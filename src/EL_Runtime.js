@@ -188,6 +188,16 @@ ELBase.prototype.query = function(queryObj){
                 bindings[e] = d.data;
                 this.currentState.set(e,current);
             })};
+
+    //go down the data list
+    //for any binding:
+    // 1) try to retrieve
+    // 2) dfs down, selecting appropriate branch? 
+
+
+
+
+
     while(queryStatus && data.length > 0){
         let next = data.shift();
         if(next instanceof ELIs.RECALL){
