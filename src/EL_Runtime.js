@@ -9,6 +9,10 @@ class ELNode {
         this.data = new Map();
     }
 
+    size(){
+        return this.data.size;
+    }
+    
     setTrieType(tt){
         if (tt == ELIs.BANG){
             this.data.clear()
@@ -40,7 +44,7 @@ class ELNode {
         this.data.delete(text);
     }
 }
-
+//------------------------------
 
 class ELBase {
     constructor (artificialRoot) {
@@ -179,6 +183,7 @@ ELBase.prototype.retract = function(retractObj){
    Query the EL Fact base for the given sequence
 */
 ELBase.prototype.query = function(queryObj){
+    //todo: go through an array of queries 
     let queryStatus = true,
         data = _.clone(queryObj.data),
         current = this.root,
@@ -189,13 +194,25 @@ ELBase.prototype.query = function(queryObj){
                 this.currentState.set(e,current);
             })};
 
-    //go down the data list
-    //for any binding:
-    // 1) try to retrieve
-    // 2) dfs down, selecting appropriate branch? 
+    while (queryStatus && data.length > 0){
+        let next = data.shift();
+        if (next.isVar){
+            //if var is bound:
 
+            //if var is unbound:
+            
+        } else if (current.has(next.text)){
+            let gotNode = current.get(next.text);
+            if (gotNode.trietype !== next.trietype){
+                queryStatus = false;
+                break;
+            }
+            current = gotNode;
+        }
+    }
+    
 
-
+    return queryStatus;
 
 
     while(queryStatus && data.length > 0){
@@ -297,3 +314,6 @@ ELBase.prototype.toStrings = function(){
 
 
 export default ELBase;
+export {
+    ELBase, ELNode
+}
