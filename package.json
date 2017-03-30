@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "description": "An ANTLR 4 based javascript parser for Richard Evan's Exclusion Logic.",
   "main": "dist/el.js",
-  "scripts": {
-    "test": "mocha --check-leaks -c --prof --log-timer-events --require babel-polyfill --compilers js:babel-register",
-    "start": "node_modules/.bin/webpack --config webpack.config.babel.js",
-    "flow": "node_modules/.bin/flow",
-    "clean": "rm -r dist; rm -r docs; exit 0",
-    "doc": "node_modules/.bin/jsdoc ./src -r -d ./docs"
+    "scripts": {
+        "test" : "mocha -c --check-leaks --require babel-polyfill --compilers js:babel-register",
+        "testfull": "mocha --check-leaks -c --prof --log-timer-events --require babel-polyfill --compilers js:babel-register",
+        "start": "node_modules/.bin/webpack --config webpack.config.babel.js",
+        "flow": "node_modunles/.bin/flow",
+        "clean": "rm -r dist; rm -r docs; exit 0",
+        "doc": "node_modules/.bin/jsdoc ./src -r -d ./docs"
   },
   "repository": {
     "type": "git",
